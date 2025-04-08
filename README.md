@@ -8,7 +8,7 @@
 
 
 ## 🎥 Demo
-![1](https://github.com/user-attachments/assets/80d4d34a-af0f-47d7-aca5-8be19950275d)
+
 
 🚧 
 ![1](https://github.com/user-attachments/assets/815c04e4-317f-4ba3-81f9-6ddd50750600)
