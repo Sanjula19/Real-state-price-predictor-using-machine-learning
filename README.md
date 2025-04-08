@@ -3,7 +3,7 @@
 </h1>
 
 <h3 align="center">
-  A Machine Learning Web App to Predict Real Estate Prices with Flask & Scikit-Learn
+  A Machine Learning Web Tool to Predict Real Estate Prices with Flask & Scikit-Learn
 </h3>
 
 
@@ -11,6 +11,7 @@
 ![1](https://github.com/user-attachments/assets/80d4d34a-af0f-47d7-aca5-8be19950275d)
 
 🚧 
+![1](https://github.com/user-attachments/assets/815c04e4-317f-4ba3-81f9-6ddd50750600)
 
 ---
 
