@@ -8,6 +8,7 @@
 
 
 ## 🎥 Demo
+![1](https://github.com/user-attachments/assets/80d4d34a-af0f-47d7-aca5-8be19950275d)
 
 🚧 
 
@@ -79,7 +80,7 @@ The script will:
 Preprocess the dataset ,
 Encode categorical values ,
 Train a RandomForestRegressor ,
-Save the model as .pkl
+Save the model as predictor_02.pickle
 
 ---
 
