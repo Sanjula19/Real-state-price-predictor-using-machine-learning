@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Predictor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #1557b0;
+        }
+
+        #result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #e8f4ff;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #1a73e8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🏠 Real Estate Price Predictor</h1>
+
+        <form id="predictForm">
+            <div class="form-group">
+                <label for="baths">Baths</label>
+                <input type="number" id="baths" required>
+            </div>
+
+            <div class="form-group">
+                <label for="land_size">Land Size (Perches)</label>
+                <input type="number" step="0.1" id="land_size" required>
+            </div>
+
+            <div class="form-group">
+                <label for="beds">Beds</label>
+                <input type="number" id="beds" required>
+            </div>
+
+            <div class="form-group">
+                <label for="house_size">House Size (sq.ft)</label>
+                <input type="number" id="house_size" required>
+            </div>
+
+            <div class="form-group">
+                <label for="district">District</label>
+                <select id="district" onchange="updateTowns()" required>
+                    <option value="" disabled selected>Select District</option>
+                    <option value="Ampara">Ampara</option>
+                    <option value="Anuradhapura">Anuradhapura</option>
+                    <option value="Badulla">Badulla</option>
+                    <option value="Batticaloa">Batticaloa</option>
+                    <option value="Colombo">Colombo</option>
+                    <option value="Galle">Galle</option>
+                    <option value="Gampaha">Gampaha</option>
+                    <option value="Hambantota">Hambantota</option>
+                    <option value="Jaffna">Jaffna</option>
+                    <option value="Kalutara">Kalutara</option>
+                    <option value="Kandy">Kandy</option>
+                    <option value="Kegalle">Kegalle</option>
+                    <option value="Kurunegala">Kurunegala</option>
+                    <option value="Mannar">Mannar</option>
+                    <option value="Matale">Matale</option>
+                    <option value="Matara">Matara</option>
+                    <option value="Monaragala">Monaragala</option>
+                    <option value="Mullativu">Mullativu</option>
+                    <option value="Nuwara Eliya">Nuwara Eliya</option>
+                    <option value="Polonnaruwa">Polonnaruwa</option>
+                    <option value="Puttalam">Puttalam</option>
+                    <option value="Ratnapura">Ratnapura</option>
+                    <option value="Trincomalee">Trincomalee</option>
+                    <option value="Vavuniya">Vavuniya</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="town">Town</label>
+                <select id="town" required>
+                    <option value="" disabled selected>Select Town</option>
+                </select>
+            </div>
+
+            <button type="submit">Predict Price</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Town data for all districts
+        const townData = {
+            "Ampara": ["Ampara City", "Akkarepattu", "Kalmunai"],
+            "Anuradhapura": ["Anuradhapura City", "Mihintale", "Nochchiyagama", "Eppawala"],
+            "Badulla": ["Badulla City", "Bandarawela", "Welimada", "Haputale"],
+            "Batticaloa": ["Batticaloa City"],
+            "Colombo": ["Colombo 1", "Colombo 2", "Colombo 3", "Colombo 4", "Colombo 5", "Colombo 6", "Colombo 7", "Colombo 8", "Colombo 9", "Colombo 10", "Colombo 12", "Colombo 13", "Colombo 14", "Colombo 15", "Dehiwala", "Mount Lavinia", "Nugegoda", "Kohuwala", "Rajagiriya", "Wellampitiya"],
+            "Galle": ["Galle City", "Ahangama", "Hikkaduwa", "Karapitiya", "Dikwella"],
+            "Gampaha": ["Gampaha City", "Ja-Ela", "Ragama", "Kadawatha", "Kiribathgoda", "Kelaniya", "Negombo", "Minuwangoda", "Divulapitiya", "Seeduwa", "Wattala"],
+            "Hambantota": ["Hambantota City", "Tangalla", "Ambalantota", "Kataragama"],
+            "Jaffna": ["Jaffna City", "Nallur"],
+            "Kalutara": ["Kalutara City", "Beruwala", "Bandaragama", "Matugama", "Wadduwa"],
+            "Kandy": ["Kandy City", "Peradeniya", "Katugastota", "Pilimatalawa", "Gampola", "Gelioya", "Digana", "Menikhinna"],
+            "Kegalle": ["Kegalle City", "Warakapola", "Rambukkana"],
+            "Kurunegala": ["Kurunegala City", "Narammala", "Pannala", "Wariyapola", "Kuliyapitiya"],
+            "Mannar": ["Mannar City"],
+            "Matale": ["Matale City", "Galewela"],
+            "Matara": ["Matara City", "Weligama", "Dikwella", "Mirissa", "Kamburugamuwa", "Deniyaya", "Akuressa", "Devinuwara", "Kekanadura", "Thelijjawila", "Pasgoda", "Urubokka", "Thihagoda", "Malimbada", "Hakmana", "Makandura"],
+            "Monaragala": ["Monaragala City", "Wellawaya", "Bibile"],
+            "Mullativu": ["Mullativu City"],
+            "Nuwara Eliya": ["Nuwara Eliya City", "Nawalapitiya", "Hatton"],
+            "Polonnaruwa": ["Polonnaruwa City", "Medirigiriya"],
+            "Puttalam": ["Puttalam City", "Wennappuwa", "Chilaw"],
+            "Ratnapura": ["Ratnapura City", "Balangoda", "Pelmadulla"],
+            "Trincomalee": ["Trincomalee City"],
+            "Vavuniya": ["Vavuniya City"]
+        };
+
+        function updateTowns() {
+            const district = document.getElementById("district").value;
+            const townSelect = document.getElementById("town");
+            townSelect.innerHTML = '<option value="" disabled selected>Select Town</option>';
+
+            if (district && townData[district]) {
+                townData[district].forEach(town => {
+                    const option = document.createElement("option");
+                    option.value = town;
+                    option.textContent = town;
+                    townSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Form submission
+        document.getElementById("predictForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = {
+                Baths: document.getElementById("baths").value,
+                Land_size: document.getElementById("land_size").value,
+                Beds: document.getElementById("beds").value,
+                House_size: document.getElementById("house_size").value,
+                district: document.getElementById("district").value,
+                town: document.getElementById("town").value
+            };
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.error) {
+                    document.getElementById("result").innerHTML =
+                        `<span style="color:red">Error: ${result.error}</span>`;
+                } else {
+                    document.getElementById("result").innerHTML =
+                        `Predicted Price: <strong>Rs. ${result.predicted_price.toLocaleString()}</strong>`;
+                }
+            } catch (error) {
+                document.getElementById("result").innerHTML =
+                    "<span style='color:red'>Network Error</span>";
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+
