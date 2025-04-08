@@ -10,9 +10,7 @@
 
 ## 🎥 Demo
 
-🚧 *Demo video or screenshots can be added here if available*  
-Example:  
-![App Screenshot](screenshot.png)
+🚧 
 
 ---
 
@@ -49,6 +47,7 @@ Example:
 ---
 
 🧠 How it Works
+
 📝 User enters property data (location, size, beds, etc.)
 
 🚀 JavaScript sends the form data to the Flask /predict endpoint
@@ -58,3 +57,27 @@ Example:
 🧠 Model predicts price using RandomForestRegressor
 
 📊 Prediction is returned and displayed on the page
+
+
+---
+
+🧪 Model Training
+
+python app.py
+
+Make sure your dataset includes the following columns:
+
+Beds,
+Baths,
+House_size,
+Land_size,
+District,
+Town,
+Price
+
+The script will:
+
+Preprocess the dataset ,
+Encode categorical values ,
+Train a RandomForestRegressor ,
+Save the model as .pkl
