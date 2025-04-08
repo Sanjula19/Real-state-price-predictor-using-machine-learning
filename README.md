@@ -6,7 +6,6 @@
   A Machine Learning Web App to Predict Real Estate Prices with Flask & Scikit-Learn
 </h3>
 
----
 
 ## 🎥 Demo
 
@@ -81,3 +80,10 @@ Preprocess the dataset ,
 Encode categorical values ,
 Train a RandomForestRegressor ,
 Save the model as .pkl
+
+---
+
+
+
+
+
