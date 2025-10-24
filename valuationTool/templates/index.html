@@ -4,148 +4,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate Predictor</title>
+    <title>Real Estate Predictor | Professional Property Valuation</title>
     <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --secondary: #34a853;
+            --accent: #fbbc05;
+            --text: #333333;
+            --text-light: #5f6368;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #dadce0;
+            --shadow: rgba(60, 64, 67, 0.1);
+            --success: #e8f4ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            color: var(--text);
+            line-height: 1.6;
         }
 
         .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px var(--shadow);
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
         h1 {
-            color: #1a73e8;
-            text-align: center;
-            margin-bottom: 2rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: 400;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #333;
+            color: var(--text);
             font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-container {
+            position: relative;
         }
 
         input,
         select {
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fcfcfc;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+            background-color: white;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 1.1rem;
         }
 
         button {
             width: 100%;
             padding: 1rem;
-            background: #1a73e8;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
         button:hover {
-            background: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.25);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
         }
 
         #result {
             margin-top: 1.5rem;
-            padding: 1rem;
-            background: #e8f4ff;
+            padding: 1.5rem;
+            background: var(--success);
             border-radius: 8px;
             text-align: center;
             font-size: 1.2rem;
-            color: #1a73e8;
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        #result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>🏠 Real Estate Price Predictor</h1>
+        <div class="header">
+            <span class="header-icon">🏠</span>
+            <h1>Real Estate Price Predictor</h1>
+            <p class="subtitle">Get an accurate property valuation in seconds</p>
+        </div>
 
         <form id="predictForm">
-            <div class="form-group">
-                <label for="baths">Baths</label>
-                <input type="number" id="baths" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="beds">Bedrooms</label>
+                    <div class="input-container">
+                        <input type="number" id="beds" min="1" max="10" required>
+                        <span class="input-icon">🛏️</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="baths">Bathrooms</label>
+                    <div class="input-container">
+                        <input type="number" id="baths" min="1" max="10" required>
+                        <span class="input-icon">🚿</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="land_size">Land Size (Perches)</label>
-                <input type="number" step="0.1" id="land_size" required>
-            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="land_size">Land Size (Perches)</label>
+                    <div class="input-container">
+                        <input type="number" step="0.1" id="land_size" min="1" required>
+                        <span class="input-icon">📏</span>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label for="beds">Beds</label>
-                <input type="number" id="beds" required>
-            </div>
-
-            <div class="form-group">
-                <label for="house_size">House Size (sq.ft)</label>
-                <input type="number" id="house_size" required>
+                <div class="form-group">
+                    <label for="house_size">House Size (sq.ft)</label>
+                    <div class="input-container">
+                        <input type="number" id="house_size" min="100" required>
+                        <span class="input-icon">🏘️</span>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="district">District</label>
-                <select id="district" onchange="updateTowns()" required>
-                    <option value="" disabled selected>Select District</option>
-                    <option value="Ampara">Ampara</option>
-                    <option value="Anuradhapura">Anuradhapura</option>
-                    <option value="Badulla">Badulla</option>
-                    <option value="Batticaloa">Batticaloa</option>
-                    <option value="Colombo">Colombo</option>
-                    <option value="Galle">Galle</option>
-                    <option value="Gampaha">Gampaha</option>
-                    <option value="Hambantota">Hambantota</option>
-                    <option value="Jaffna">Jaffna</option>
-                    <option value="Kalutara">Kalutara</option>
-                    <option value="Kandy">Kandy</option>
-                    <option value="Kegalle">Kegalle</option>
-                    <option value="Kurunegala">Kurunegala</option>
-                    <option value="Mannar">Mannar</option>
-                    <option value="Matale">Matale</option>
-                    <option value="Matara">Matara</option>
-                    <option value="Monaragala">Monaragala</option>
-                    <option value="Mullativu">Mullativu</option>
-                    <option value="Nuwara Eliya">Nuwara Eliya</option>
-                    <option value="Polonnaruwa">Polonnaruwa</option>
-                    <option value="Puttalam">Puttalam</option>
-                    <option value="Ratnapura">Ratnapura</option>
-                    <option value="Trincomalee">Trincomalee</option>
-                    <option value="Vavuniya">Vavuniya</option>
-                </select>
+                <div class="input-container">
+                    <select id="district" onchange="updateTowns()" required>
+                        <option value="" disabled selected>Select District</option>
+                        <option value="Ampara">Ampara</option>
+                        <option value="Anuradhapura">Anuradhapura</option>
+                        <option value="Badulla">Badulla</option>
+                        <option value="Batticaloa">Batticaloa</option>
+                        <option value="Colombo">Colombo</option>
+                        <option value="Galle">Galle</option>
+                        <option value="Gampaha">Gampaha</option>
+                        <option value="Hambantota">Hambantota</option>
+                        <option value="Jaffna">Jaffna</option>
+                        <option value="Kalutara">Kalutara</option>
+                        <option value="Kandy">Kandy</option>
+                        <option value="Kegalle">Kegalle</option>
+                        <option value="Kurunegala">Kurunegala</option>
+                        <option value="Mannar">Mannar</option>
+                        <option value="Matale">Matale</option>
+                        <option value="Matara">Matara</option>
+                        <option value="Monaragala">Monaragala</option>
+                        <option value="Mullativu">Mullativu</option>
+                        <option value="Nuwara Eliya">Nuwara Eliya</option>
+                        <option value="Polonnaruwa">Polonnaruwa</option>
+                        <option value="Puttalam">Puttalam</option>
+                        <option value="Ratnapura">Ratnapura</option>
+                        <option value="Trincomalee">Trincomalee</option>
+                        <option value="Vavuniya">Vavuniya</option>
+                    </select>
+                    <span class="input-icon">🗺️</span>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="town">Town</label>
-                <select id="town" required>
-                    <option value="" disabled selected>Select Town</option>
-                </select>
+                <div class="input-container">
+                    <select id="town" required>
+                        <option value="" disabled selected>Select Town</option>
+                    </select>
+                    <span class="input-icon">📍</span>
+                </div>
             </div>
 
-            <button type="submit">Predict Price</button>
+            <button type="submit">Predict Property Value</button>
         </form>
 
         <div id="result"></div>
+        
+        <div class="footer">
+            <p>Accurate property valuation based on current market data</p>
+        </div>
     </div>
 
     <script>
@@ -213,21 +398,22 @@
                 });
 
                 const result = await response.json();
+                const resultDiv = document.getElementById("result");
+                
                 if (result.error) {
-                    document.getElementById("result").innerHTML =
-                        `<span style="color:red">Error: ${result.error}</span>`;
+                    resultDiv.innerHTML = `<span style="color:red">Error: ${result.error}</span>`;
                 } else {
-                    document.getElementById("result").innerHTML =
-                        `Predicted Price: <strong>Rs. ${result.predicted_price.toLocaleString()}</strong>`;
+                    resultDiv.innerHTML = `Estimated Property Value: <strong>Rs. ${result.predicted_price.toLocaleString()}</strong>`;
                 }
+                
+                resultDiv.classList.add("show");
             } catch (error) {
-                document.getElementById("result").innerHTML =
-                    "<span style='color:red'>Network Error</span>";
+                const resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = "<span style='color:red'>Network Error. Please try again.</span>";
+                resultDiv.classList.add("show");
             }
         });
     </script>
 </body>
 
 </html>
-
-
