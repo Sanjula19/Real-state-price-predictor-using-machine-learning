@@ -24,7 +24,8 @@
 ## 🎬 Demo
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/815c04e4-317f-4ba3-81f9-6ddd50750600" width="800" alt="Demo" />
+  <img src="<img width="572" height="780" alt="Screenshot 2025-10-24 142522" src="https://github.com/user-attachments/assets/44481744-4670-4eb2-907d-cc9f24992f67" />
+" width="800" alt="Demo" />
 </div>
 
 ---
